@@ -28,7 +28,7 @@ def pyMuPDF_fitz(pdfPath, imagePath):
 
 if __name__ == "__main__":
     # 1、PDF地址
-    pdfPath = './more_texts.pdf'
+    pdfPath = './more_diagrams.pdf'
     # 2、需要储存图片的目录
     imagePath = './images'
     pyMuPDF_fitz(pdfPath, imagePath)

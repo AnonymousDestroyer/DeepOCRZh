@@ -1,4 +1,4 @@
 paddlepaddle-gpu
-paddleocr==2.0.1
+paddleocr>=2.0.1
 fitz
 PyMuPDF==1.16.14
