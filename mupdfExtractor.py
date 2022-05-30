@@ -8,6 +8,9 @@ from PIL import Image
 """
 PyMuPDF utility
 ----------------
+For Deprecated names 
+https://pymupdf.readthedocs.io/en/latest/znames.html?highlight=getImageList#deprecated-names
+
 For a given entry in a page's getImagleList() list, function "recoverpix"
 returns either the raw image data, or a modified pixmap if an /SMask entry
 exists.
@@ -124,13 +127,14 @@ for pno in tqdm(range(page_count), desc="progressing:"):
 
             # rgb_pix = fitz.Pixmap(fitz.csRGB, cmyk_pix)   convert cmyk to rgb
             pil_image = Image.open(io.BytesIO(imgdata))
-            pil_image.show()
+            # pil_image.show()
             pil_image.save(imgfile, compression="JPEG")
         else:  # we got a pixmap
             imgfile = os.path.join(imgdir, "img-%i.png" % xref)
             if pix.colorspace.name not in (fitz.csGRAY.name, fitz.csRGB.name):
                 # if image is not Gray (pix.n=4) bytes per pixel or RGB(pix.n=3), convert it into RGB
                 pix = fitz.Pixmap(fitz.csRGB, pix)
+                pix.save(os.path.join(imgdir, "img-%i.pam" % (xref)))
             imgdata = pix.getPNGData()
             if filter_size(imgdata, abssize):
                 continue
