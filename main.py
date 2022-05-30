@@ -1,15 +1,16 @@
-from image2text import ocr_img
-from visualization import visualise_current_plot
-from paddleocr import PaddleOCR
+# This is a sample Python script.
 
-if __name__ == "__main__":
-    # 单张图片测试
-    img_path = 'images/images_16.png'
-    out_path = './text'
-    ocr_model_paddle = PaddleOCR(use_angle_cls=True, lang='ch')
-    print("model loaded successfully")
-    result = ocr_img(ocr_model_paddle, img_path, 'images_16', out_path)
-    print(result)
-    # 多张图片测试
-    # traverse_file("images/", "text")
-    visualise_current_plot(ocr_model_paddle, img_path)
+# Press Shift+F10 to execute it or replace it with your code.
+# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+
+
+def print_hi(name):
+    # Use a breakpoint in the code line below to debug your script.
+    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+
+
+# Press the green button in the gutter to run the script.
+if __name__ == '__main__':
+    print_hi('PyCharm')
+
+# See PyCharm help at https://www.jetbrains.com/help/pycharm/
