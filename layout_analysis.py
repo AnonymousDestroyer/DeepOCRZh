@@ -14,6 +14,13 @@ from collections import deque
 
 BOUNDARY = 5
 MINILEN = 1
+
+img_path = "/content/DeepOCRZh/images"
+save_path = "/content/"
+os.makedirs(save_path, exist_ok=True)
+os.makedirs(save_path + "minipages", exist_ok=True)
+os.makedirs(save_path + "layout_vis", exist_ok=True)
+
 MODEL_CATALOG = {
     "EfficientNet":
         {
@@ -98,7 +105,7 @@ def layout_analysis(net, ocr_net, img_path, save_path):
                 # visualize
                 # plt.imshow(minipage)
                 # plt.show()
-                cv2.imwrite("/content/minipages/img_%i_mini_%s.png" % (i, j), minipage)
+                cv2.imwrite(os.path.join(save_path + "minipages", "img_%i_mini_%s.png" % (i, j)), minipage)
 
                 # use last text as title
                 if ocr_title == "None" and title_score == 0:
@@ -115,23 +122,19 @@ def layout_analysis(net, ocr_net, img_path, save_path):
 
         # bbox analysis
         show_img = lp.draw_box(img, layout, box_width=3, show_element_type=True)
-        show_img.save(os.path.join(save_path, "layout%s.png" % i))
+        show_img.save(os.path.join(save_path + "layout_vis", "layout%s.png" % i))
 
     block_record = pd.concat(block_record, axis=0, ignore_index=True)
-    block_record.to_csv("/content/block_record.csv")
+    block_record.to_csv(os.path.join(save_path, "block_record.csv"))
 
 
 # load layout model
-# model = lp.PaddleDetectionLayoutModel(config_path="lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config",
-#                                 threshold=0.5,
-#                                 label_map={0: "Text", 1: "Title", 2: "List", 3:"Table", 4:"Figure"},
-#                                 enforce_cpu=False,
-#                                 enable_mkldnn=True)
+model = lp.PaddleDetectionLayoutModel("lp://PubLayNet/ppyolov2_r50vd_dcn_365e/config")
 ocr_model_paddle = PaddleOCR(use_angle_cls=True, lang='ch')
 
-model = lp.Detectron2LayoutModel('lp://PubLayNet/faster_rcnn_R_50_FPN_3x/config',
-                                 extra_config=["MODEL.ROI_HEADS.SCORE_THRESH_TEST", 0.80],
-                                 label_map={0: "Text", 1: "Title", 2: "List", 3: "Table", 4: "Figure"})
+# model = lp.Detectron2LayoutModel('lp://PubLayNet/faster_rcnn_R_50_FPN_3x/config',
+#                                  extra_config=["MODEL.ROI_HEADS.SCORE_THRESH_TEST", 0.80],
+#                                  label_map={0: "Text", 1: "Title", 2: "List", 3: "Table", 4: "Figure"})
 
 # model = lp.EfficientDetLayoutModel('lp://efficientdet/PubLayNet/tf_efficientdet_d1',
 #                                    )
@@ -139,4 +142,4 @@ model = lp.Detectron2LayoutModel('lp://PubLayNet/faster_rcnn_R_50_FPN_3x/config'
 #                                  extra_config=["MODEL.ROI_HEADS.SCORE_THRESH_TEST", 0.90],
 #                                  label_map={0: "Text", 1: "Title", 2: "List", 3:"Table", 4:"Figure"})
 
-layout_analysis(model, ocr_model_paddle, "/content/DeepOCRZh/images", "/content/processed")
+layout_analysis(model, ocr_model_paddle, img_path=img_path, save_path=save_path)
