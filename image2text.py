@@ -1,5 +1,5 @@
 import os
-from paddleocr import PaddleOCR
+from replace_paddleocr import PaddleOCR
 import datetime
 import re
 import numpy as np

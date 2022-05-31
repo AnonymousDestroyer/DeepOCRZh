@@ -1,6 +1,6 @@
 from image2text import ocr_img
 from visualization import visualise_current_plot
-from paddleocr import PaddleOCR
+from replace_paddleocr import PaddleOCR
 
 if __name__ == "__main__":
     # 单张图片测试

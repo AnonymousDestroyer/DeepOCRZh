@@ -1,4 +1,4 @@
-from paddleocr import PaddleOCR, draw_ocr
+from replace_paddleocr import PaddleOCR, draw_ocr
 from PIL import Image
 import matplotlib.pyplot as plt
 import cv2

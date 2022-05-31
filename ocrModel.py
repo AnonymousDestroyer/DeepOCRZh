@@ -5,7 +5,7 @@ import re
 import os
 import matplotlib.pyplot as plt
 import pandas as pd
-from paddleocr import PaddleOCR
+from replace_paddleocr import PaddleOCR
 
 boundary = 5
 MODEL_CATALOG = {

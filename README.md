@@ -10,14 +10,25 @@ pip install -r requirement.txt
 ```
 ## detectron2 (推荐)
 !pip install layoutparser torchvision && pip install "git+https://github.com/facebookresearch/detectron2.git@v0.5#egg=detectron2"
+
 ## efficientnet
 !pip install "layoutparser[effdet]"
 ## paddle
 !pip install "layoutparser[paddledetection]"
 
+### 使用detectron2可能存在的兼容问题
 环境中包含tools, 解决paddleocr安装包兼容问题(https://github.com/PaddlePaddle/PaddleOCR/issues/1024)
-将paddle中.tools替换成paddleocr.tools
+5.31 Efficient和paddle环境不存在上述问题
 
+将paddle中.tools替换成paddleocr.tools
+```
+mv replace_paddleocr.py pathToYourPaddleOCR/paddleocr.py
+```
+colab
+```
+mv replace_paddleocr.py /usr/local/lib/python3.7/dist-packages/paddleocr/paddleocr.py
+```
+## Run the code
 先运行extract_image.py将pdf中的每一页存成图片
 ```shell
 python extract_image.py
