@@ -19,7 +19,7 @@ def pyMuPDF_fitz(pdfPath, imagePath):
         # zoom factor in each dimension
         mat = fitz.Matrix(zoom_x, zoom_y).prerotate(rotate)
         # apply zoomed matrix to image
-        pix = page.get_images(matrix=mat, alpha=False)
+        pix = page.get_pixmap(matrix=mat, alpha=False)
         if not os.path.exists(imagePath):  # 判断存放图片的文件夹是否存在
             os.makedirs(imagePath)  # 若图片文件夹不存在就创建
         pix.save(imagePath + '/' + 'images_%s.png' % pg)  # 将图片写入指定的文件夹内
@@ -27,6 +27,15 @@ def pyMuPDF_fitz(pdfPath, imagePath):
     endTime_pdf2img = datetime.datetime.now()  # 结束时间
     print('pdf2img时间=', (endTime_pdf2img - startTime_pdf2img).seconds)
 
+
+if __name__ == "__main__":
+    # 1、PDF地址
+    pdfPath = '/content/DeepOCRZh/pdf/more_diagrams.pdf'
+    # 2、需要储存图片的目录
+    imagePath = './images'
+    if not os.path.exists(imagePath):
+        os.makedirs(imagePath)
+    pyMuPDF_fitz(pdfPath, imagePath)
 
 if __name__ == "__main__":
     # 1、PDF地址
