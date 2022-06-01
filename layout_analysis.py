@@ -129,12 +129,12 @@ def layout_analysis(net, ocr_net, img_path, save_path):
 
 
 # load layout model
-model = lp.PaddleDetectionLayoutModel("lp://PubLayNet/ppyolov2_r50vd_dcn_365e/config")
+#model = lp.PaddleDetectionLayoutModel("lp://PubLayNet/ppyolov2_r50vd_dcn_365e/config")
 ocr_model_paddle = PaddleOCR(use_angle_cls=True, lang='ch')
 
-# model = lp.Detectron2LayoutModel('lp://PubLayNet/faster_rcnn_R_50_FPN_3x/config',
-#                                  extra_config=["MODEL.ROI_HEADS.SCORE_THRESH_TEST", 0.80],
-#                                  label_map={0: "Text", 1: "Title", 2: "List", 3: "Table", 4: "Figure"})
+model = lp.Detectron2LayoutModel('lp://PubLayNet/faster_rcnn_R_50_FPN_3x/config',
+                                  extra_config=["MODEL.ROI_HEADS.SCORE_THRESH_TEST", 0.80],
+                                  label_map={0: "Text", 1: "Title", 2: "List", 3: "Table", 4: "Figure"})
 
 # model = lp.EfficientDetLayoutModel('lp://efficientdet/PubLayNet/tf_efficientdet_d1',
 #                                    )
