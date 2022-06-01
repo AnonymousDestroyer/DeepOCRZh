@@ -1,5 +1,4 @@
 fitz 
-PyMuPDF>=1.18.18
+PyMuPDF=1.19.0
 layoutparser[paddledetection]
 paddleocr>=2.0.1
-paddlepaddle-gpu==2.1.0

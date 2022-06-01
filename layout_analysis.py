@@ -15,8 +15,8 @@ from collections import deque
 BOUNDARY = 5
 MINILEN = 1
 
-img_path = "/content/DeepOCRZh/images"
-save_path = "/content/"
+img_path = "./images"
+save_path = "./result"
 os.makedirs(save_path, exist_ok=True)
 os.makedirs(save_path + "minipages", exist_ok=True)
 os.makedirs(save_path + "layout_vis", exist_ok=True)
