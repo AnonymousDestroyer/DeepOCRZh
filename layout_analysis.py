@@ -15,8 +15,8 @@ from collections import deque
 BOUNDARY = 5
 MINILEN = 1
 
-img_path = "./images"
-save_path = "./result"
+img_path = "/content/DeepOCRZh/images"
+save_path = "/content/"
 os.makedirs(save_path, exist_ok=True)
 os.makedirs(save_path + "minipages", exist_ok=True)
 os.makedirs(save_path + "layout_vis", exist_ok=True)
@@ -56,7 +56,61 @@ def ocr_text(text_net, region):
         return None
 
 
+def layout_analysis(net, ocr_net, img_pat
+
 def layout_analysis(net, ocr_net, img_path, save_path):
+    sorted_imgs = sorted(os.listdir(img_path),
+                         key=lambda x: int("".join(re.findall(r"[\d*]", x))))
+    total_num = 0
+    block_record = []
+    for i, f in enumerate(sorted_imgs):
+
+        img = os.path.join(img_path, f)
+        img = cv2.imread(img, cv2.IMREAD_COLOR)
+        height, width, channels = img.shape  # y, x, c
+        # img = img[..., ::-1]
+        layout = net.detect(img)
+
+        ocr_title = "None"
+        title_score = 0
+        last_text_region = None
+        for j, block in enumerate(layout._blocks):
+
+            if block.type == "Title":
+                _block = block.block
+                x_2, y_2 = int(_block.x_2), int(_block.y_2)
+                x_1, y_1 = int(_block.x_1), int(_block.y_1)
+                text_region = img[y_1:y_2, x_1:x_2, ...]  # crop text region out
+                if ocr_title == "None" and title_score == 0:
+                    ocr_text_result = ocr_text(ocr_net, text_region)
+                    if ocr_text_result is None:
+                        continue
+                    else:
+                        ocr_title, title_score = ocr_text_result
+
+            elif block.type == "Text":
+                _block = block.block
+                x_2, y_2 = int(_block.x_2), int(_block.y_2)
+                x_1, y_1 = int(_block.x_1), int(_block.y_1)
+                last_text_region = img[y_1:y_2, x_1:x_2, ...]  # update last text region
+
+            elif block.type == "Figure":
+                _block = block.block
+                x_2, y_2 = int(_block.x_2), int(_block.y_2)
+                x_1, y_1 = int(_block.x_1), int(_block.y_1)
+                x_1 = max(x_1 - BOUNDARY, 0)
+                y_1 = max(y_1 - BOUNDARY, 0)
+                x_2 = min(x_2 + BOUNDARY, width)
+                y_2 = min(y_2 + BOUNDARY, height)
+                minipage = img[y_1:y_2, x_1:x_2, ...]  # crop
+
+                # visualize
+                # plt.imshow(minipage)
+                # plt.show()
+                cv2.imwrite(os.path.join(save_path + "minipages", "img_%i_mini_%s.png" % (i, j)), minipage)
+
+                # use last text as title
+                if ocr_title == "None" and title_score == 0:h, save_path):
     sorted_imgs = sorted(os.listdir(img_path),
                          key=lambda x: int("".join(re.findall(r"[\d*]", x))))
     total_num = 0
@@ -129,12 +183,12 @@ def layout_analysis(net, ocr_net, img_path, save_path):
 
 
 # load layout model
-#model = lp.PaddleDetectionLayoutModel("lp://PubLayNet/ppyolov2_r50vd_dcn_365e/config")
+model = lp.PaddleDetectionLayoutModel("lp://PubLayNet/ppyolov2_r50vd_dcn_365e/config")
 ocr_model_paddle = PaddleOCR(use_angle_cls=True, lang='ch')
 
-model = lp.Detectron2LayoutModel('lp://PubLayNet/faster_rcnn_R_50_FPN_3x/config',
-                                  extra_config=["MODEL.ROI_HEADS.SCORE_THRESH_TEST", 0.80],
-                                  label_map={0: "Text", 1: "Title", 2: "List", 3: "Table", 4: "Figure"})
+# model = lp.Detectron2LayoutModel('lp://PubLayNet/faster_rcnn_R_50_FPN_3x/config',
+#                                  extra_config=["MODEL.ROI_HEADS.SCORE_THRESH_TEST", 0.80],
+#                                  label_map={0: "Text", 1: "Title", 2: "List", 3: "Table", 4: "Figure"})
 
 # model = lp.EfficientDetLayoutModel('lp://efficientdet/PubLayNet/tf_efficientdet_d1',
 #                                    )
