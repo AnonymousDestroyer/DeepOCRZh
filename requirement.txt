@@ -1,4 +1,3 @@
-fitz 
-PyMuPDF=1.19.0
+pdf2image
 layoutparser[paddledetection]
 paddleocr>=2.0.1
