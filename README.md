@@ -8,12 +8,12 @@ CUDA 11.x
 ```shell
 pip install -r requirement.txt
 ```
-## detectron2 (中间�)
+## detectron2 (推荐)
 !pip install layoutparser torchvision && pip install "git+https://github.com/facebookresearch/detectron2.git@v0.5#egg=detectron2"
 
-## efficientnet (最后装
+## efficientnet
 !pip install "layoutparser[effdet]"
-## paddle (先装
+## paddle
 !pip install "layoutparser[paddledetection]"
 
 ### 使用detectron2可能存在的兼容问题
@@ -31,7 +31,7 @@ mv replace_paddleocr.py /usr/local/lib/python3.7/dist-packages/paddleocr/paddleo
 ## Run the code
 先运行extract_image.py将pdf中的每一页存成图片
 ```shell
-python extract_from_pdf.py
+python extract_image.py
 ```
 
 ## Layout Analysis
